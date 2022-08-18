@@ -1,6 +1,6 @@
 # Delphi program to convert an image to data to be used in an Apple II program
 
-Thz Apple II programn written by J.B. Langston, is here :
+Thz Apple II program written by J.B. Langston, is here :
 https://gist.github.com/jblang/5b9e9ba7e6bbfdc64ad2a55759e401d5
 and in this guthub
 
