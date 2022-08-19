@@ -8,8 +8,8 @@
 // So resolution is 40 x 23
 
 // Each pixel of the valid BMP file is run length encoded,
-// accordingly to algorythm used in Apple II programm :
-// 1st nibble is length, 2nd nibble is value
+// accordingly to algorithm used in Apple II program :
+// 1st nibble is length, 2nd nibble is value.
 
 
 // Bruno Z.
