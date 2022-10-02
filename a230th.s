@@ -85,6 +85,7 @@ decode
 	lsr	a
 	tax				; x = number of identical pixels
 	lda	(ptr),y		; get value of pixel from lower nibble 
+  ;eor #$ff   ; for a negative image
 	and	#$0F		; value = offset in chars table
 	tay
 	lda	chars,y		; load char at offset
