@@ -1,28 +1,16 @@
 
-; ORIGINAL PROGRAM :
-; Apple 30th Anniversary Tribute for Apple II by Dave Schmenk
-; Original at https://www.applefritter.com/node/24600#comment-60100
-; Disassembled, Commented, and ported to Apple II by J.B. Langston
-; Assemble with `64tass -b -o a2apple30th.bin -L a2apple30th.lst`
-; https://gist.github.com/jblang/5b9e9ba7e6bbfdc64ad2a55759e401d5
-
-; THiS PROGRAM :
-; enhenced with a text animation
-; and mainly with a Delphi program to convert any BMP 40x23 4 bits grey pixels image 
-; to data to copy/paste at the end of this program.
-; see https://github.com/bruno185/Delphi-program-for-Apple-II-text-mode-image-display
-
 KEYBD equ $c000		; keyboard register
 KBSTRDBE equ $c010		; keyboard strobe register
 spkr  equ $c030     ; clic
 offscreen equ $2000		; base address of offscreen storage
 gbascalc equ $f847 		; calc Address
 home equ  $fc58
-vtab equ $fc22      ; Moves the cursor to the video display line indicated by CV ($25).
+vtab equ $fc22      ; Moves the cursor to line in CV ($25).
 cout equ $fded
 wait equ $fca8 
 
 ptr	equ $06				; pointer to current image
+ptrlu equ $08
 cv equ $25
 gbasl equ $26 			; Adresse du début  dans la page text calculée par gbascalc
 
@@ -67,6 +55,21 @@ inloop  nop             ;2 cycles
   lda #17
   jsr cout        ; 40 col.
 	jsr home
+
+ ; init lookup table
+  lda #<lookup    ; init prtlu ==> base address of lookup table
+  sta ptrlu
+  lda #>lookup
+  sta ptrlu+1
+  ldx #15       ; 16 bytes
+luloop
+  lda chars,x 
+  tay
+  txa
+  sta (ptrlu),y
+  dex
+  bpl luloop
+
 	lda	#<image			;load image address in ptr
 	sta	ptr
 	lda	#>image
@@ -166,7 +169,12 @@ loopcmp
   lda (gbasl),y ; get byte in text page
   cmp (ptr),y   ; compare with byte in offsreen
   beq noinc     ; no equal : next byte
-	inc           ; inc value
+  ; get next char in lookup table
+  tax           ; move byte to x
+  lda lookup,x  ; get index in lookup table
+  inc           ; next index
+  tax           ; index in x
+  lda chars,x   ; get char in chars table
   sta (gbasl),y ; poke vale in text page
   jsr clic      ; make some noise
 
@@ -240,7 +248,7 @@ clic
   pha
   ldy #$03    ; duration
 doclic 
-  ldx #$8     ; pitch
+  ldx #$10     ; pitch
   lda spkr    ; sound
 wait1
   dex
@@ -425,3 +433,5 @@ image
   db $1A,$17,$1E,$AF
   db $00
 
+lookup
+  ds 256
