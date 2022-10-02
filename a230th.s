@@ -1,18 +1,31 @@
 
-KEYBD equ $c000		; keyboard register
+; ORIGINAL PROGRAM :
+; Apple 30th Anniversary Tribute for Apple II by Dave Schmenk
+; Original at https://www.applefritter.com/node/24600#comment-60100
+; Disassembled, Commented, and ported to Apple II by J.B. Langston
+; Assemble with `64tass -b -o a2apple30th.bin -L a2apple30th.lst`
+; https://gist.github.com/jblang/5b9e9ba7e6bbfdc64ad2a55759e401d5
+
+; THiS PROGRAM :
+; enhenced with a text animation
+; and mainly with a Delphi program to convert any BMP 40x23 4 bits grey pixels image 
+; to data to copy/paste at the end of this program.
+; see https://github.com/bruno185/Delphi-program-for-Apple-II-text-mode-image-display
+
+KEYBD equ $c000		    ; keyboard register
 KBSTRDBE equ $c010		; keyboard strobe register
-spkr  equ $c030     ; clic
+spkr  equ $c030       ; clic
 offscreen equ $2000		; base address of offscreen storage
 gbascalc equ $f847 		; calc Address
 home equ  $fc58
-vtab equ $fc22      ; Moves the cursor to line in CV ($25).
+vtab equ $fc22        ; Moves the cursor to line in CV ($25).
 cout equ $fded
 wait equ $fca8 
 
-ptr	equ $06				; pointer to current image
+ptr	equ $06				    ; pointer to current image
 ptrlu equ $08
 cv equ $25
-gbasl equ $26 			; Adresse du début  dans la page text calculée par gbascalc
+gbasl equ $26 			  ; base address of text line, given by gbascalc
 
   XC        ; allow 65c02 opcodes
 
@@ -34,7 +47,7 @@ bip     lda $c030       ;4 cycles
 inloop  nop             ;2 cycles
         ;nop             ;2 cycles
         ;nop             ;2 cycles
-       ; nop             ;2 cycles
+        nop             ;2 cycles
         dex             ;2 cycles
         bne inloop      ;3 cycles
         dey             ;2 cycles
@@ -48,8 +61,7 @@ inloop  nop             ;2 cycles
         pla         ; restore A
         <<<
 
-*       = $0C00
-
+******************** BEGINNIG ********************
 	org $8000
 
   lda #17
@@ -57,7 +69,7 @@ inloop  nop             ;2 cycles
 	jsr home
 
  ; init lookup table
-  lda #<lookup    ; init prtlu ==> base address of lookup table
+  lda #<lookup    ; init prtlu = base address of lookup table
   sta ptrlu
   lda #>lookup
   sta ptrlu+1
@@ -81,17 +93,17 @@ luloop
 decode
 	ldy	#$00
 	lda	(ptr),y		; load run length and character offset
-	beq	anim 		; $00 indicates end of current image
-	lsr	a			; get run length from upper nybble
+	beq	anim 		  ; $00 indicates end of current image
+	lsr	a			    ; get run length from upper nybble
 	lsr	a
 	lsr	a
 	lsr	a
-	tax				; x = number of identical pixels
-	lda	(ptr),y		; get value of pixel from lower nibble 
+	tax				  ; x = number of identical pixels
+	lda	(ptr),y	; get value of pixel from lower nibble 
   ;eor #$ff   ; for a negative image
 	and	#$0F		; value = offset in chars table
 	tay
-	lda	chars,y		; load char at offset
+	lda	chars,y	; load char at offset
 
 * poke pixels in offsreen storage
 * X = number of pixels (length)
@@ -119,8 +131,8 @@ decode
 	sta gbasl+1
 
 	pla 			; restore length
-	tay				; y = length
-	dey 			; adjut length (length of 1 ==> offset = 0)
+	tay				; y = length (number of identical pixels)
+	dey 			; adjut length (ex : length of 1 ==> offset = 0)
 
 	clc 		
 	adc linelength	; update number of pixel on this line
@@ -145,8 +157,9 @@ loopoff
 
 anim
 ; compare offsreen and text screen
-; while each byte not equal, inc text screen byte, update flag
-; repeat full loop until no inc 
+; while each byte not equal, inc text screen byte
+; in chars table, and update flag
+; repeat full loop until no inc (flag = 0)
 
 	lda #$00
 	sta line		; line #
@@ -192,7 +205,6 @@ noinc
   lda permut    ; did an update occured ?
   bne anim      ; yes : loop from the beginning
 
-  ;jsr waitkey
   ldx #40
 bigwait 
   lda #$81
@@ -216,7 +228,7 @@ spaceloop
   dex           ; next 
   bne spaceloop
   ldx #$00
-print           ; now print text
+print          ; now print text
   lda mytext+1,x 
   beq endprint
   jsr cout
@@ -225,7 +237,7 @@ print           ; now print text
 
   lda #$fe    ; wait
   jsr wait
-  playnote $40;$10;$20; bip !
+  playnote $80;$10;$20; bip !
 
 endprint
   jsr waitkey
