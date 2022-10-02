@@ -169,8 +169,10 @@ loopcmp
 	inc           ; inc value
   sta (gbasl),y ; poke vale in text page
   jsr clic      ; make some noise
+
   lda #$01      ; update flag "an update occured"
   sta permut
+
 noinc
   iny           ; next byte on the line
   cpy #40       ; end of line ?     
@@ -190,7 +192,7 @@ bigwait
   jsr wait
   dex
   bne bigwait
-  playnote $AA;$20;$20; bip !
+  playnote $88;$10;$20; bip !
   
   ; print s^paces before text
   lda #23       ; vtab on last line
@@ -214,9 +216,9 @@ print           ; now print text
   inx
   jmp print
 
-  lda #$FF    ; wait
+  lda #$fe    ; wait
   jsr wait
-  playnote $3D;$20;$20; bip !
+  playnote $40;$10;$20; bip !
 
 endprint
   jsr waitkey
@@ -236,12 +238,16 @@ clic
   pha
   tya
   pha
-  ldy #$02    ; duration
+  ldy #$03    ; duration
 doclic 
   ldx #$8     ; pitch
   lda spkr    ; sound
 wait1
   dex
+  nop 
+  nop
+  nop
+  nop
   nop 
   nop
   bne wait1
