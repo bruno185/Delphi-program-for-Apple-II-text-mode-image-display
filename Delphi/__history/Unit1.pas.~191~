@@ -313,7 +313,7 @@ begin
       end
       else
       begin
-        write(filout,',$');   // add a hex number on the same line
+        write(filout,', $');   // add a hex number on the same line
         write(filout, sa[j][i]);
         inc(i);
         write(filout, sa[j][i]);
