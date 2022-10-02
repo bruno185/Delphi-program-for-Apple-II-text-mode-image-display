@@ -5,18 +5,17 @@
 
 ; https://gist.github.com/jblang/5b9e9ba7e6bbfdc64ad2a55759e401d5
 
-KEYBD equ $C000			; keyboard register
-KBSTRDBE equ $C010		; keyboard strobe register
-spkr  equ $C030     ; clic
-ptr	equ $06				; pointer to current image
-ptr2	equ $08			; second pointer
+KEYBD equ $c000		; keyboard register
+KBSTRDBE equ $c010		; keyboard strobe register
+spkr  equ $c030     ; clic
 offscreen equ $2000		; base address of offscreen storage
-gbascalc equ $F847 		; calc Address
-home equ  $FC58
-vtab equ $FC22      ; Moves the cursor to the video display line indicated by CV ($25).
+gbascalc equ $f847 		; calc Address
+home equ  $fc58
+vtab equ $fc22      ; Moves the cursor to the video display line indicated by CV ($25).
 cout equ $fded
 wait equ $fca8 
 
+ptr	equ $06				; pointer to current image
 cv equ $25
 gbasl equ $26 			; Adresse du début  dans la page text calculée par gbascalc
 
