@@ -202,7 +202,7 @@ bigwait
   bne bigwait
   playnote $88;$10;$20; bip !
   
-  ; print s^paces before text
+  ; print spaces before text
   lda #23       ; vtab on last line
   sta cv
   jsr vtab
