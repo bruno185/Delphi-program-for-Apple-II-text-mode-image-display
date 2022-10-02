@@ -78,7 +78,6 @@ luloop
 	sta line
 	sta linelength		; init current line counter
 
-NEXTRUN
 decode
 	ldy	#$00
 	lda	(ptr),y		; load run length and character offset
