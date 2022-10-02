@@ -312,11 +312,11 @@ begin
       end
       else
       begin
-        write(filout,', $');   // add a hex number on the same line
-        write(filout, sa[j][i]);
-        inc(i);
-        write(filout, sa[j][i]);
-        inc(i);
+      write(filout,', $');   // add a hex number on the same line
+      write(filout, sa[j][i]);
+      inc(i);
+      write(filout, sa[j][i]);
+      inc(i);
       end;
       inc (bw);
     until (i>length(sa[j]));

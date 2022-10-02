@@ -22,7 +22,7 @@ copy /Y %ProjectFolder%\A.po %ProjectFolder%\%PRG%.po
 
 echo --------------- Debut Applecommander ---------------
 rem add binary program to image disk
-%ACJAR% -p %PRG%.po %PRG% bin 32768 < %PRG%
+%ACJAR% -p %PRG%.po a bin 32768 < %PRG%
 
 echo ----------- fin Applecommander ---------------
 echo --------------- Debut Applewin ---------------
