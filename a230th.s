@@ -1,9 +1,16 @@
+
+; ORIGINAL PROGRAM :
 ; Apple 30th Anniversary Tribute for Apple II by Dave Schmenk
 ; Original at https://www.applefritter.com/node/24600#comment-60100
 ; Disassembled, Commented, and ported to Apple II by J.B. Langston
 ; Assemble with `64tass -b -o a2apple30th.bin -L a2apple30th.lst`
-
 ; https://gist.github.com/jblang/5b9e9ba7e6bbfdc64ad2a55759e401d5
+
+; THiS PROGRAM :
+; enhenced with a text animation
+; and mainly with a Delphi program to convert any BMP 40x23 4 bits grey pixels image 
+; to data to copy/paste at the end of this program.
+; see https://github.com/bruno185/Delphi-program-for-Apple-II-text-mode-image-display
 
 KEYBD equ $c000		; keyboard register
 KBSTRDBE equ $c010		; keyboard strobe register
