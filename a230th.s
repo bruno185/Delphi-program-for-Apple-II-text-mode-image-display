@@ -188,8 +188,16 @@ loopcmp
   tax           ; index in x
   lda chars,x   ; get char in chars table
   sta (gbasl),y ; poke vale in text page
-  jsr clic      ; make some noise
 
+  tya           ; changes on every loop (h position)
+  and #%00011111 ; One on 32
+  bne noclic    ; jmmp over clic 
+  jsr clic      ; make some noise
+  jmp nowait    ; 
+noclic
+  lda #$08      ; no sound but delay
+  jsr wait
+nowait
   lda #$01      ; update flag "an update occured"
   sta permut
 
@@ -306,7 +314,7 @@ chars
 ;; Last image is indicated by $00 byte after caption
 
 mytext
- str "Liberty"
+ str "Digital democraty"
   db 00 
   
 image
