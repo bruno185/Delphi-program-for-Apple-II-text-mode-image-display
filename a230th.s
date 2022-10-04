@@ -180,7 +180,7 @@ outerloop
 loopcmp
   lda (gbasl),y ; get byte in text page
   cmp (ptr),y   ; compare with byte in offsreen
-  beq noinc     ; no equal : next byte
+  beq noinc     ; if equal : next byte
   ; get next char in lookup table
   tax           ; move byte to x
   lda lookup,x  ; get index in lookup table
