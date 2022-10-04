@@ -190,7 +190,7 @@ loopcmp
   sta (gbasl),y ; poke vale in text page
 
   tya           ; changes on every loop (h position)
-  and #%00011111 ; One on 32
+  and #%00000111 ; One on 8
   bne noclic    ; jmmp over clic 
   jsr clic      ; make some noise
   jmp nowait    ; 
